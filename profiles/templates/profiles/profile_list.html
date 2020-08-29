@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+all profiles
+{% endblock title %}
+
+{% block content %}
+
+    {% if is_empty %}
+        <h1>No profiles to interact with</h1>
+    {% endif %}
+
+    {% for obj in object_list %}
+        <div class="ui segment">
+            <div class="ui grid">
+                <div class="row">
+                    <div class="three wide column">
+                        <img class="ui small circular image" src={{obj.avatar.url}}>
+                    </div>
+                    <div class="thirteen wide column">
+                        <h3>{{obj.user}}</h3>
+                        <p>{{obj.bio}}</p>
+                        <button class="ui primary button mb-5 w-big">See profile</button>
+                        <br>
+
+                        {% if obj.user not in rel_receiver and obj.user not in rel_sender %}
+                            <form action="{% url 'profiles:send-invite' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="profile_pk" value={{obj.pk}}>
+                                <button type="submit" class="ui positive basic button mb-5 w-big"><i class="plus square icon"></i>Add to friends</button>
+                            </form>
+                         {% endif %}
+
+                        {% if obj.user in rel_receiver and request.user not in obj.friends.all %}
+                            <button class="ui disabled button mb-5 w-big"><i class="user icon"></i>Waiting for approval</button>
+                        {% endif %}
+
+                        {% if request.user in obj.friends.all %}
+                        <form action="{% url 'profiles:remove-friend' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="profile_pk" value={{obj.pk}}>
+                            <button type="submit" class="ui negative basic button mb-5 w-big"><i class="minus square icon"></i>Remove from friends</button>
+                        </form>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}

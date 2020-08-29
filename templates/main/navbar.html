@@ -1,0 +1,54 @@
+<div class="ui inverted menu nav mb-7">
+  <div class="ui container">
+    <a href="" class="item">
+        <h3>bffbook</h3>
+    </a>
+    {% if request.user.is_authenticated %}
+    <a href="" class="item">
+        Home
+    </a>
+    {% endif %}
+
+    <div class="right menu">
+        {% if request.user.is_authenticated %}
+        <div class="item">
+            <div class="ui floating dropdown icon button teal"> Friends
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a href="" class="item">
+                        All Profiles
+                    </a>
+                    <a href="" class="item">
+                        Send Invites
+                    </a>
+                    <a href="" class="item">
+                        Received Invites
+                    </a>
+                </div>
+             </div>
+        </div>
+             <div class="item">
+              <form action="" method="GET">
+                <div class="ui action left icon input">
+                <input class="prompt" type="text" name='q' placeholder="name of a friend...">
+                <i class="search icon"></i>
+                <button type='submit' class="ui button">Search</button>
+                </div>
+            </form>
+            </div>
+        
+            <a href="" class="item">
+                 {{ request.user }}
+            </a>
+
+            <a href="" class="ui item">
+                Logout
+            </a>
+        {% else %}
+        <a href="" class="ui item">
+                Login
+            </a>
+        {% endif %}
+    </div>
+  </div>
+</div>
